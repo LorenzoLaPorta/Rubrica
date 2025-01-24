@@ -1,4 +1,6 @@
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -13,8 +15,9 @@ In questo programma integro:
     3) memorizzazione di nome e numero di telefono
     4) creazione di un contatto
     5) visualizzazione di tutti i contatti
-    6) ricerca di un contattto per nome e numero di telefono
+    6) ricerca di un contatto per nome e numero di telefono
     7) modifica di un contatto
+    8) rimozione di un contatto
 */
 public class Rubrica{
     //ATTRIBUTI
@@ -54,17 +57,64 @@ public class Rubrica{
         return input;
     }
 
-
-    public static void salva(){
+    /**
+     * Salva i contatti aggiunti su un altro file
+     * 
+     * @param void
+     * @return true se il salvataggio e' andato a buon fine, altrimenti false
+     */
+    public static boolean salva(){
         try{
             FileWriter scrittura = new FileWriter(FILE);
-            scrittura.write("Files in Java might be tricky, but it is fun enough!");
+            ArrayList<Contatto> arrayList = rubrica.rubricaArray;
+            for (int i = 0; i < arrayList.size(); i++) {
+                Contatto oggetto = arrayList.get(i);
+                scrittura.write(oggetto.toString() + "\n");
+            }
             scrittura.close();
         }
-        catch (IOException e) {
-            System.out.println("An error occurred.");
-            e.printStackTrace();
+        catch (IOException e){
+            return false;
         }
-        System.out.println("Successfully wrote to the file.");
+        return true;
     }  
+
+    /**
+     * Legge il contenuto del file
+     * 
+     * @param void
+     * @return il testo letto, se non trova il file ritorna un errore
+     */
+    public static Contatto leggi(){
+        try{
+            File file = new File(FILE);
+            Scanner lettore = new Scanner(file);
+            while (lettore.hasNextLine()){
+                Contatto contatto = new Contatto(null, null); //creo l'oggetto del contatto
+                contatto.nome = lettore.nextLine();
+                contatto.numero = lettore.nextLine();
+            }
+            lettore.close();
+        } 
+        catch (FileNotFoundException e){
+            return null;
+        }
+        return ;
+    }
+
+    public static boolean importaContatti(){
+        
+        contatto.nome = Rubrica.inserisciString("Inserisci il nome del contatto");
+        String numero = Rubrica.inserisciString("Inserisci il numero del contatto");
+        if (isNumerico(numero)){
+            contatto.numero = numero;
+            //aggiungo il contatto alla rubrica
+            Rubrica.rubrica.rubricaArray.add(contatto);
+        }
+        else{
+            //ritorno "falso" se il numero non e' composto solo da numeri
+            return false;
+        }
+        return true;
+    }
 }

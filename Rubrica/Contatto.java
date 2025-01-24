@@ -20,6 +20,17 @@ public class Contatto{
         this.numero = numero;
         this.nome = nome;
     }
+
+    /**
+     * Override del metodo toString per stampare nome e numero di telefono
+     * 
+     * @param void
+     * @return il nome e il numero di telefono in una stringa
+     */
+    @Override
+    public String toString(){
+        return this.nome + "\n" + this.numero;
+    }
     /**
      * Metodo che verifica se un numero di telefono contiene effettivamente solo numeri
      * 
