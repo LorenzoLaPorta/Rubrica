@@ -1,3 +1,6 @@
+
+import java.util.ArrayList;
+
 /*
 Lorenzo La Porta, 4°MCIF
 
@@ -9,6 +12,7 @@ In questo programma integro:
     5) visualizzazione di tutti i contatti
     6) ricerca di un contattto per nome e numero di telefono
     7) modifica di un contatto
+    8) rimozione di un contatto
 */
 public class Contatto{
     //ATTRIBUTI
@@ -22,7 +26,7 @@ public class Contatto{
     }
 
     /**
-     * Override del metodo toString per stampare nome e numero di telefono
+     * Override del metodo toString per scrivere il nome e il numero di telefono in un file
      * 
      * @param void
      * @return il nome e il numero di telefono in una stringa
@@ -40,7 +44,7 @@ public class Contatto{
     public static boolean isNumerico(String numeroInserito){
         char[] numero = numeroInserito.toCharArray();
         for (int i = 0; i < numero.length; i++){
-            if (numero[i] < 48 && numero[i] > 57){
+            if (numero[i] < 48 || numero[i] > 57){
                 return false;
             }
         }
@@ -54,8 +58,8 @@ public class Contatto{
      */
     public static boolean creaContatto(){
         Contatto contatto = new Contatto(null, null); //creo l'oggetto del contatto
-        contatto.nome = Rubrica.inserisciString("Inserisci il nome del contatto");
-        String numero = Rubrica.inserisciString("Inserisci il numero del contatto");
+        contatto.nome = Main.inserisciString("Inserisci il nome del contatto");
+        String numero = Main.inserisciString("Inserisci il numero del contatto");
         if (isNumerico(numero)){
             contatto.numero = numero;
             //aggiungo il contatto alla rubrica
@@ -68,4 +72,86 @@ public class Contatto{
         return true;
     }
 
+    /**
+     * Metodo che cerca un contatto per nome
+     * 
+     * @param void
+     * @return l'indice del contatto se lo trova, altrimenti -1
+     */
+    public static int ricercaPerNome(){
+        String nome = Main.inserisciString("Inserisci il nome del contatto");
+        ArrayList<Contatto> arrayList = Rubrica.rubrica.rubricaArray;
+        for (int i = 0; i < arrayList.size(); i++){
+            //se il nome e' uguale a quello inserito
+            if (arrayList.get(i).nome.equals(nome)){
+                //ritorno l'indice del contatto
+                return i;
+            }
+        }
+        //ritorno -1 se non trovo il contatto
+        return -1;
+    }
+
+    /**
+     * Metodo che cerca un contatto per numero
+     * 
+     * @param void
+     * @return l'indice del contatto se lo trova, altrimenti -1
+     */
+    public static int ricercaPerNumero(){
+        String numero = Main.inserisciString("Inserisci il numero del contatto");
+        ArrayList<Contatto> arrayList = Rubrica.rubrica.rubricaArray;
+        for (int i = 0; i < arrayList.size(); i++){
+            //se il numero e' uguale a quello inserito
+            if (arrayList.get(i).numero.equals(numero)){
+                //ritorno l'indice del contatto
+                return i;
+            }
+        }
+        //ritorno -1 se non trovo il contatto
+        return -1;
+    }
+
+    /**
+     * Metodo che modifica un contatto
+     * 
+     * @param void
+     * @return true se la modifica e' avvenuta correttamente, altrimenti false
+     */
+    public static boolean modificaContatto(){
+        int indice = ricercaPerNome();
+        if (indice != -1){
+            Contatto contatto = Rubrica.rubrica.rubricaArray.get(indice);
+            String nome = Main.inserisciString("Inserisci il nuovo nome del contatto, se non vuoi modificarlo premi invio");
+            String numero = Main.inserisciString("Inserisci il nuovo numero del contatto, se non vuoi modificarlo premi invio");
+            if (!nome.equals("")){
+                contatto.nome = nome;
+            }
+            if (!numero.equals("")){
+                if (isNumerico(numero)){
+                    contatto.numero = numero;
+                }
+                else{
+                    return false;
+                }
+            }
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * Metodo che rimuove un contatto
+     * 
+     * @param void
+     * @return true se la rimozione e' avvenuta correttamente, altrimenti false
+     */
+    public static boolean rimuoviContatto(){
+        int indice = ricercaPerNome();
+        if (indice != -1){
+            Rubrica.rubrica.rubricaArray.remove(indice); //rimuovo il contatto
+            return true;
+        }
+        return false;
+    }
 }

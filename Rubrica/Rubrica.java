@@ -22,39 +22,29 @@ In questo programma integro:
 public class Rubrica{
     //ATTRIBUTI
     String nome;
-    ArrayList<Contatto> rubricaArray = new ArrayList<>();
+    ArrayList<Contatto> rubricaArray;
     //---------
 
-    Rubrica(String nome, ArrayList<Contatto> rubricaArray){
+    Rubrica(String nome){
         this.nome = nome;
-        this.rubricaArray = rubricaArray;
+        this.rubricaArray = new ArrayList<>();
     }
 
-    public static Scanner scanner = new Scanner(System.in); //scanner in grado di prendere input
-    public static Rubrica rubrica = new Rubrica(null, null); //oggetto che rappresenta la rubrica
-    public static final String FILE = "./rubrica.txt";
-    
+    public static Rubrica rubrica = new Rubrica("rubrica"); //oggetto che rappresenta la rubrica
+    public static final String FILE = "./rubrica.txt"; //file dove vengono salvati i contatti
+
     /**
-     * Metodo che prende input di tipo String
+     * Metodo che stampa tutti i contatti
      * 
-     * @param String il messaggio da stampare prima dell'input
-     * @return l'input
+     * @param void
+     * @return void
      */
-    public static String inserisciString(String messaggio){
-        System.out.println(messaggio);
-        return scanner.nextLine();
-    }
-    /**
-     * Metodo che prende input di tipo int
-     * 
-     * @param String il messaggio da stampare prima dell'input
-     * @return l'input
-     */
-    public static int inserisciInt(String messaggio){
-        System.out.println(messaggio);
-        int input = scanner.nextInt();
-        scanner.nextLine();
-        return input;
+    public static void stampaContatti(){
+        System.out.println(rubrica.nome.toUpperCase());
+        for (int i = 0; i < rubrica.rubricaArray.size(); i++){
+            Contatto contatto = rubrica.rubricaArray.get(i);
+            System.out.println((i + 1) + ") " + contatto.nome + ": [" + contatto.numero + "]");
+        }
     }
 
     /**
@@ -85,36 +75,34 @@ public class Rubrica{
      * @param void
      * @return il testo letto, se non trova il file ritorna un errore
      */
-    public static Contatto leggi(){
+    public static boolean leggi(){
         try{
             File file = new File(FILE);
             Scanner lettore = new Scanner(file);
             while (lettore.hasNextLine()){
-                Contatto contatto = new Contatto(null, null); //creo l'oggetto del contatto
-                contatto.nome = lettore.nextLine();
-                contatto.numero = lettore.nextLine();
+                String nome = lettore.nextLine();
+                String numero = lettore.nextLine();
+                importaContatti(nome, numero);
             }
             lettore.close();
         } 
         catch (FileNotFoundException e){
-            return null;
-        }
-        return ;
-    }
-
-    public static boolean importaContatti(){
-        
-        contatto.nome = Rubrica.inserisciString("Inserisci il nome del contatto");
-        String numero = Rubrica.inserisciString("Inserisci il numero del contatto");
-        if (isNumerico(numero)){
-            contatto.numero = numero;
-            //aggiungo il contatto alla rubrica
-            Rubrica.rubrica.rubricaArray.add(contatto);
-        }
-        else{
-            //ritorno "falso" se il numero non e' composto solo da numeri
             return false;
         }
         return true;
+    }
+
+    /**
+     * Metodo che importa i contatti nella rubrica
+     * 
+     * @param String il nome del contatto
+     * @param String il numero del contatto
+     * @return void
+     */
+    public static void importaContatti(String nome, String numero){
+        Contatto contatto = new Contatto(null, null); //creo l'oggetto del contatto
+        contatto.nome = nome;
+        contatto.numero = numero;
+        rubrica.rubricaArray.add(contatto);
     }
 }
