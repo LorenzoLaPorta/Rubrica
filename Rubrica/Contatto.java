@@ -51,6 +51,21 @@ public class Contatto{
         return true;
     }
     /**
+     * 
+     */
+    public static boolean isUnico(String nomeInserito, String numeroInserito){
+        ArrayList <Contatto> rubrica = Rubrica.rubrica.rubricaArray;
+        for (int i = 0; i < rubrica.size(); i++){
+            String nomeCorrente = rubrica.get(i).nome;
+            String numeroCorrente = rubrica.get(i).numero;
+            //se uno tra nome inserito e numero inserito e' uguale a uno dei rispettivi nomi e numeri correnti
+            if (nomeInserito.equals(nomeCorrente) || numeroInserito.equals(numeroCorrente)){
+                return false;
+            }
+        }
+        return true;
+    }
+    /**
      * Metodo che crea un contatto
      * 
      * @param void
@@ -58,15 +73,16 @@ public class Contatto{
      */
     public static boolean creaContatto(){
         Contatto contatto = new Contatto(null, null); //creo l'oggetto del contatto
-        contatto.nome = Main.inserisciString("Inserisci il nome del contatto");
+        String nome = Main.inserisciString("Inserisci il nome del contatto");
         String numero = Main.inserisciString("Inserisci il numero del contatto");
-        if (isNumerico(numero)){
+        if (isNumerico(numero) && isUnico(nome, numero)){
+            contatto.nome = nome;
             contatto.numero = numero;
             //aggiungo il contatto alla rubrica
             Rubrica.rubrica.rubricaArray.add(contatto);
         }
         else{
-            //ritorno "falso" se il numero non e' composto solo da numeri
+            //ritorno "falso" se il numero non e' composto solo da numeri o il contatto non e' unico
             return false;
         }
         return true;

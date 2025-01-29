@@ -54,8 +54,7 @@ public class Rubrica{
      * @return true se il salvataggio e' andato a buon fine, altrimenti false
      */
     public static boolean salva(){
-        try{
-            FileWriter scrittura = new FileWriter(FILE);
+        try (FileWriter scrittura = new FileWriter(FILE)){
             ArrayList<Contatto> arrayList = rubrica.rubricaArray;
             for (int i = 0; i < arrayList.size(); i++) {
                 Contatto oggetto = arrayList.get(i);
@@ -76,9 +75,8 @@ public class Rubrica{
      * @return il testo letto, se non trova il file ritorna un errore
      */
     public static boolean leggi(){
-        try{
-            File file = new File(FILE);
-            Scanner lettore = new Scanner(file);
+        File file = new File(FILE);
+        try (Scanner lettore = new Scanner(file)){
             while (lettore.hasNextLine()){
                 String nome = lettore.nextLine();
                 String numero = lettore.nextLine();

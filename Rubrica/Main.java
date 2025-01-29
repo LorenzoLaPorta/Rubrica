@@ -57,7 +57,9 @@ public class Main{
         System.out.println("-------------------------------");
     }
     public static void main(String[] args) {
-        Rubrica.leggi(); //importo i contatti dal file
+        if(Rubrica.leggi() == false){ //importo i contatti dal file
+            System.out.println("C'e' stato un errore nella lettura del file, assicurati che esista e il percorso sia corretto");
+        }
         String scelta;
         do {
             stampaMenu();
